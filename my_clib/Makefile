@@ -19,7 +19,7 @@ all: $(BIN)
 $(BIN): $(OBJS)
 	$(CC) -o $@ $^ $(LIBS) ${CFLAGS}
  
-	#-rm ${OBJS}
+	-rm ${OBJS}
 
 clean:
 	rm -f $(OBJS) $(BIN)
