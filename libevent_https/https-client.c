@@ -134,6 +134,17 @@ static int cert_verify_callback (X509_STORE_CTX *x509_ctx, void *arg)
    * the default functionality, rather than replacing it. */
   int ok_so_far = X509_verify_cert (x509_ctx);
 
+  if(ok_so_far == 0){
+  long nCode = X509_STORE_CTX_get_error(x509_ctx);
+  const char * pChError = X509_verify_cert_error_string(nCode);
+  info_report ("X509_verify_cert_error_string :%s\n", pChError);
+
+  }
+
+
+
+  ok_so_far = 1;
+
   X509 *server_cert = X509_STORE_CTX_get_current_cert (x509_ctx);
 
   if (ok_so_far)
@@ -160,6 +171,9 @@ static int cert_verify_callback (X509_STORE_CTX *x509_ctx, void *arg)
           res_str = "WTF!";
           break;
         }
+    info_report ("validate_hostname result:%d\n", MatchFound);
+
+        res = MatchFound;
     }
 
   char cert_str[256];
@@ -197,7 +211,11 @@ static char *client_do_post (const char *host, int port, const char *passcode)
 
   /* Find the certificate authority (which we will use to
    * validate the server) and add it to the context. */
-  SSL_CTX_load_verify_locations (sctx, "certificate-authorities.pem", NULL);
+  //SSL_CTX_load_verify_locations (sctx, "private.pem", NULL);
+  //SSL_CTX_load_verify_locations (sctx, "certificate-authorities.pem", NULL);
+
+  SSL_CTX_load_verify_locations(sctx,"server.crt",NULL);
+
 
   SSL_CTX_set_verify (sctx, SSL_VERIFY_PEER, NULL);
   SSL_CTX_set_cert_verify_callback (sctx, cert_verify_callback, (void *) host);
@@ -246,7 +264,7 @@ int main (int argc, char **argv)
 
   /* Send the passcode to the https server in a POST request. */
   char *result = client_do_post (host, COMMON_HTTPS_PORT, COMMON_PASSCODE);
-  printf ("server said: %s\n------------\n", result);
+  printf ("server said: %s\n\n", result);
   free (result);
 
   result = client_do_post ("localhost", COMMON_HTTPS_PORT, COMMON_PASSCODE);

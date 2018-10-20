@@ -89,6 +89,8 @@ send_document_cb (struct evhttp_request *req, void *arg)
   const char *uri = evhttp_request_get_uri (req);
   struct evhttp_uri *decoded = NULL;
 
+  printf ("Got a POST request for <%s>\n", uri);
+
   if (evhttp_request_get_command (req) == EVHTTP_REQ_GET)
     {
       struct evbuffer *buf = evbuffer_new();
@@ -166,11 +168,16 @@ static struct bufferevent* bevcb (struct event_base *base, void *arg)
 { struct bufferevent* r;
   SSL_CTX *ctx = (SSL_CTX *) arg;
 
+  info_report ("start bevcb \n");
+
   r = bufferevent_openssl_socket_new (base,
                                       -1,
                                       SSL_new (ctx),
                                       BUFFEREVENT_SSL_ACCEPTING,
                                       BEV_OPT_CLOSE_ON_FREE);
+  if(r==NULL){
+    info_report ("bufferevent_openssl_socket_new return NULL \n");
+  }
   return r;
 }
 
@@ -230,10 +237,11 @@ static int serve_some_http (void)
     die_most_horribly_from_openssl_error ("SSL_CTX_set_tmp_ecdh");
 
   /* Find and set up our server certificate. */
-  const char *certificate_chain = "server-certificate-chain.pem";
-  const char *private_key = "server-private-key.pem";
-  // const char *certificate_chain = "localhost.crt";
-  // const char *private_key = "localhost.key";
+  // const char *certificate_chain = "server-certificate-chain.pem";
+  // const char *private_key = "server-private-key.pem";
+
+  const char *certificate_chain = "server.crt";
+  const char *private_key = "server.key";
 
   server_setup_certs (ctx, certificate_chain, private_key);
 
