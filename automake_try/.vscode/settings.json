@@ -1,0 +1,11 @@
+{
+    "files.associations": {
+        "common.h": "c",
+        "env_config.h": "c",
+        "debug.h": "c",
+        "pstring.h": "c",
+        "in.h": "c",
+        "string.h": "c",
+        "stdlib.h": "c"
+    }
+}

@@ -1,0 +1,3 @@
+safe-string : Sam Thomas <s@ghost.sh>
+******************************************************************************
+Library ensuring safety of string operations in C.
