@@ -97,7 +97,7 @@ static void launch_request (struct session *s)
                                 base, 0, bev, s->host, s->port);
   evhttp_connection_set_timeout (conn, 60);
 
-#if 0
+#if 1
   /* Retries defaults to 0, which seems bad, since some of the evhttp
    * code seems to assume that a retry will happen:
    * http://archives.seul.org/libevent/users/Jan-2013/msg00051.html
@@ -239,15 +239,19 @@ static char *client_do_post (const char *host, int port, const char *passcode)
   return s1.result;
 }
 
-static const char host[] = "localhost";
+static const char host[] = "127.0.0.1";
 
 int main (int argc, char **argv)
 { common_setup ();              /* initialize OpenSSL */
 
   /* Send the passcode to the https server in a POST request. */
   char *result = client_do_post (host, COMMON_HTTPS_PORT, COMMON_PASSCODE);
-  printf ("server said: %s\n", result);
+  printf ("server said: %s\n------------\n", result);
   free (result);
+
+  result = client_do_post ("localhost", COMMON_HTTPS_PORT, COMMON_PASSCODE);
+  printf ("server said: %s\n", result);
+  free (result); 
 
   return EXIT_SUCCESS;
 }

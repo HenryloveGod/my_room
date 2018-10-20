@@ -1,5 +1,7 @@
 # (c)  Oblong Industries #
 
+
+
 AUTOMAKE_OPTIONS = \
   foreign \
   1.9 \
@@ -30,5 +32,5 @@ noinst_HEADERS = \
   openssl_hostname_validation.h \
   #
 
-AM_CFLAGS = $(LIBEVENT_CFLAGS) $(OPENSSL_CFLAGS)
+AM_CFLAGS = $(LIBEVENT_CFLAGS) $(OPENSSL_CFLAGS) -g -O0
 AM_LDFLAGS = $(OPENSSL_LDFLAGS) $(LIBEVENT_LIBS) $(OPENSSL_LIBS)

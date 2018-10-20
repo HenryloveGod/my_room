@@ -17,6 +17,7 @@ AC_CONFIG_MACRO_DIR([bld/m4])
 #
 AC_PROG_CC
 
+CFLAGS="-g -O0"
 
 LT_INIT
 

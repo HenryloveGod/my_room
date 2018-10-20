@@ -232,6 +232,9 @@ static int serve_some_http (void)
   /* Find and set up our server certificate. */
   const char *certificate_chain = "server-certificate-chain.pem";
   const char *private_key = "server-private-key.pem";
+  // const char *certificate_chain = "localhost.crt";
+  // const char *private_key = "localhost.key";
+
   server_setup_certs (ctx, certificate_chain, private_key);
 
   /* This is the magic that lets evhttp use SSL. */
